@@ -1,3 +1,4 @@
+
 window.devicePixelRatio = window.devicePixelRatio || 1;
 var Config = {
 	width: window.screen.availWidth * window.devicePixelRatio,
@@ -26,15 +27,15 @@ function init() {
 
 function createSprites() {
 	var list = [];
-	var row = 30,
-		col = 30;
-	var w=10, h=10;
+	var row = 40,
+		col = 40;
+	var w=42, h=42;
 	var sw = Math.floor(Config.width / col),
 		sh = Math.floor(Config.height / row);
 
 	for(var r = 0; r < row; r++) {
 		for(var c = 0; c < col; c++) {
-			var b = new Block(sw * c + 5, sh * r-Config.height, w, h);
+			var b = new Block(sw * c, sh * r, w, h);
 			list.push(b);
 		}
 	}
@@ -50,17 +51,6 @@ function Block(x, y, w, h) {
 	this.h = h;
 	this.oy=y;
 
-	this.color = "#ffffff";
-
-	var img = document.createElement("canvas");
-	img.width = this.w;
-	img.height = this.h;
-	var ctx = img.getContext("2d");
-	ctx.fillStyle = this.color;
-	ctx.globalAlpha = 0.8;
-	ctx.fillRect(0, 0, img.width, img.height)
-	this.img = img;
-
 	this.init();
 }
 
@@ -68,18 +58,26 @@ function Block(x, y, w, h) {
 Block.prototype = {
 
 	init: function() {
-		this.x=this.x+random(-5, 5);
+		this.x=this.x+random(-10, 10);
 		this.y=this.oy;
 		this.ax = 0;
 		this.ay = 0.00005;
 		this.vx = 0;
-		this.vy = random(-0.5, 0.5);
+		this.vy = random(0, 0.5);
 	},
 
-
+    reset : function(){
+        this.x=this.x+random(-10, 10);
+		this.y=-100;
+		this.ax = 0;
+		this.ay = 0.00005;
+		this.vx = 0;
+		this.vy = random(0.2, 0.5);
+    },
 	update: function(timeStep) {
+        
 		if(this.y >Config.height+10) {
-			this.init();
+			this.reset();
 		}
 		var vx = this.vx + this.ax * timeStep;
 		var vy = this.vy + this.ay * timeStep;
@@ -94,7 +92,7 @@ Block.prototype = {
 	},
 
 	render: function(context, timeStep) {
-		context.drawImage(this.img,this.x, this.y);
+        context.drawImage(pic,this.x, this.y,this.w,this.h);
 	}
 }
 
@@ -124,7 +122,7 @@ Demo.prototype = {
 		this.context.fillStyle="#000000";
 
 		this.timeStep = 1000 / this.FPS;
-
+        this.maxTimeStep = this.timeStep*3;
 		var Me = this;
 		this.callRun = function() {
 			Me.run();
@@ -141,7 +139,13 @@ Demo.prototype = {
 		this.last = Date.now();
 		this.run();
 	},
-
+    pause : function(){
+        this.paused=true;
+    },
+    resume : function(){
+        this.paused=false;
+    },
+    paused : false,
 	blank: 0,
 	last: 0,
 	run: function() {
@@ -149,12 +153,19 @@ Demo.prototype = {
 		var now = Date.now();
 		var timeStep = this.blank + now - this.last;
 		this.last = now;
-
-		while(timeStep >= this.timeStep) {
-			this.update(this.timeStep);
-			timeStep -= this.timeStep;
-		}
-		this.blank = timeStep;
+        
+        if (!this.paused){
+             this.update(this.timeStep);
+            
+//            if (timeStep> this.maxTimeStep){
+//                timeStep= this.maxTimeStep;
+//            }
+//            while(timeStep >= this.timeStep) {
+//                this.update(this.timeStep);
+//                timeStep -= this.timeStep;
+//            }
+//            this.blank = timeStep;
+        }
 
 		this.render(this.context, timeStep);
 
@@ -184,30 +195,22 @@ function $id(id) {
 	return document.getElementById(id);
 }
 
-
-init();
-test.start();
-
-
-//////////////////////////
-
-var webView = new Ejecta.WebView();
-webView.src = "index.html";
-
-function check() {
-	if(webView.loaded) {
-		var t = Date.now();
-		for(var i = 0; i < 1000; i++) {
-			var r = webView.eval("thisIsAWebViewFunction2();");
-			console.log(r)
-		}
-		console.log("time : " + (Date.now() - t));
-		return;
-	}
-	setTimeout(check, 10);
+function playSnow(){
+    test.resume();
 }
-check();
 
-function thisIsAEjectJSFunction() {
-	console.log("thisIsAEjectJSFunction called by WebView");
+function pauseSnow(){
+    test.pause();
+    
+}
+
+var pic=new Image();
+
+
+function loadResource(){
+    pic.src="pic.png";
+    pic.onload=function(){
+        init();
+        test.start();
+    }
 }

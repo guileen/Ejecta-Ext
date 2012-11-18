@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, minimum-scale=0.5, maximum-scale=0.5, initial-scale=0.5, target-densitydpi=device-dpi" >
+
+	<title>Test</title>
+	<script src="cordova-2.2.0.js"></script>
+	<style type="text/css">
+		
+		body {
+			background-color: transparent;
+			padding : 0px;
+			margin : 0px;
+		}
+		
+		button {
+			padding : 10px;
+			font-size:30pt;
+            margin:20px;
+		}
+		.hud {
+            color : #ffffff;
+			font-size:40pt;
+            font-family:Arial;
+            font-weight:bolder;
+			position: absolute;
+
+			
+		}
+
+	</style>
+</head>
+	
+<body>
+	<div class="hud">
+		This is A PhoneGap WebView over the EjectaCanvas.<br/>
+		<button type="button" ontouchstart="playSnow()">
+			Start Snow
+		</button>
+		<br>
+		<button type="button" ontouchstart="pauseSnow()">
+			Pause Snow
+		</button>
+	</div>
+
+	<script>
+		function thisIsAWebViewFunction(){
+			alert("thisIsAWebViewFunction called By Ejecta");
+		}
+		
+		function thisIsAWebViewFunction2(){
+			return JSON.stringify("thisIsAWebViewFunction2 called By Ejecta");
+		}
+								
+		function playSnow(){
+            var script="playSnow()";
+            document.location.href="exec://"+script;
+        }
+		
+		function pauseSnow(){
+            var script="pauseSnow()";
+            document.location.href="exec://"+script;
+        }
+	</script>
+
+</body>	
+</html>
+
+
