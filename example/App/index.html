@@ -45,6 +45,14 @@
 	<script src="pic-rain.js"></script>
     <script>
         loadResource();
+        
+        window.ontouchmove=function(event){
+            event.preventDefault();
+        }
+        window.ontouchstart=function(event){
+            var x=event.pageX,y=event.pageY;
+            addStar(x,y);
+        }
     </script>
 
 </body> 

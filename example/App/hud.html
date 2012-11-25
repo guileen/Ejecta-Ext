@@ -43,8 +43,19 @@
 			Pause Snow
 		</button>
 	</div>
-
+Tap screen to add some stars .
 	<script>
+        window.ontouchmove=function(event){
+            event.preventDefault();
+        }
+        window.ontouchstart=function(event){
+            var x=event.pageX,y=event.pageY;
+            var script="addStar("+x+","+y+")";
+            setTimeout(function(){
+                document.location.href="exec://"+script;
+            },1);
+        }
+        
 		function thisIsAWebViewFunction(){
 			alert("thisIsAWebViewFunction called By Ejecta");
 		}
