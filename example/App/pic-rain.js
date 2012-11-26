@@ -213,7 +213,6 @@ function pauseSnow() {
 
 function addStar(x, y) {
     test.sprites.push( createStar(x,y) );
-    //test.context.drawImage(pic, x, y);
 }
 
 var pic = new Image();
