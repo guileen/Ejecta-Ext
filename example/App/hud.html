@@ -2,7 +2,14 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, minimum-scale=1, maximum-scale=1, initial-scale=1, target-densitydpi=device-dpi" >
+    
+	<script>
+		if( window.devicePixelRatio<2) {
+			document.write('<meta name="viewport" content="width=device-width, height=device-height, minimum-scale=1.0,maximum-scale=1.0,initial-scale=1.0, user-scalable=yes" />');
+		} else {
+			document.write('<meta name="viewport" content="width=device-width, height=device-height, minimum-scale=0.5,maximum-scale=0.5,initial-scale=0.5, user-scalable=no" />');
+		}
+    </script>
 
 	<title>Test</title>
 	<script src="cordova-2.2.0.js"></script>
